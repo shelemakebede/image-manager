@@ -1,9 +1,14 @@
-FROM node:20
+FROM node:18
 
 WORKDIR /app
-COPY . .
-RUN npm install
-RUN npm run build
 
-EXPOSE 5173
-CMD ["npm", "run", "dev", "--", "--host"]
+# Copy only package files first for caching
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["npm", "start"]
